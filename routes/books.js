@@ -37,7 +37,7 @@ router.get("/:id", asyncHandler((req, res) => {
 }));
 
 // post /books/:id - Updates book info in the database.
-router.get("/:id/edit", asyncHanlder((req, res) => {
+router.get("/:id/edit", asyncHandler((req, res) => {
   res.render("update-book", {});
 }));
 
