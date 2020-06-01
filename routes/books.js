@@ -12,12 +12,14 @@ function asyncHandler(cb) {
 // get /books redirected from / in index.js - Shows the full list of books.
 router.get('/', asyncHandler(async (req, res) => {
   const books = await Books.findAll();
+  await console.log("testing console log");
   res.render("index", { books: books });
 }));
 
 router.get('/:id', asyncHandler(async(req, res) => {
-  const book = await Books.findByPk(req.params.id);
-  res.render("show", {book: book, title: book.title})
+  // const book = await Books.findByPk(req.params.id);
+  res.render("show");
+  // , {book: book, title: book.title, info: inf}
 }));
 
 // get /books/new - Shows the create new book form.
