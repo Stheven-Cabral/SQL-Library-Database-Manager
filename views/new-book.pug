@@ -4,18 +4,18 @@ block content
   header
     h1= title
     div.container
-      form(action="")
+      form(action="/books" method="post")
         p
-          label(for="title")
+          label(for="title") Title:
           input(type="text", name="title")
         p
-          label(for="author")
+          label(for="author") Author:
           input(type="text", name="author")
         p
-          label(for="genre")
+          label(for="genre") Genre:
           input(type="text", name="genre")
         p
-          label(for="year")
+          label(for="year") Year:
           input(type="text", name="year")
         p
           input(type="Submit" Value="Add Book")

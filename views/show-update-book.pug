@@ -12,7 +12,7 @@ block content
   br
   div.container
     h2 Update Book Details
-    form(action="/books/" + book.id)
+    form(action="/books/" + book.id, method="post")
       include update-book-form
   br
   br

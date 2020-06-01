@@ -21,11 +21,11 @@ router.get('/new', asyncHandler((req, res) => {
 }));
 
 // post /books/new - Posts a new book to the database.
-// /books is the url the new book is posted to.
-// router.post("/", asyncHandler((req, res) => {
-//   // Add article id
-//   res.redirect("/books/");
-// }));
+// / is redirected to /books(the url the new book is posted to).
+router.post("/", asyncHandler(async (req, res) => {
+  const book = await Books.create(req.body);
+  res.redirect("/books/" + book.id);
+}));
 
 // get /books/:id - Shows book detail form.
 router.get('/:id', asyncHandler(async (req, res) => {
