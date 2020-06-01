@@ -15,6 +15,11 @@ router.get('/', asyncHandler(async (req, res) => {
   res.render("index", { books: books });
 }));
 
+router.get('/:id', asyncHandler(async(req, res) => {
+  const book = await Books.findByPk(req.params.id);
+  res.render("show", {book: book, title: book.title})
+}));
+
 // get /books/new - Shows the create new book form.
 // router.get('/new', asyncHandler((req, res) => {
 //   res.render("new-book");
