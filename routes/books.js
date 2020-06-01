@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-// const Books = require('../models').Books;
+const Books = require('../models').Books;
 
 /***Handler function used to wrap each route */
 function asyncHandler(cb) {
@@ -10,8 +10,9 @@ function asyncHandler(cb) {
 }
 
 // get /books redirected from / in index.js - Shows the full list of books.
-router.get('/', asyncHandler((req, res) => {
-  res.render("index");
+router.get('/', asyncHandler(async (req, res) => {
+  const books = await Books.findAll();
+  res.render("index", { books: books });
 }));
 
 // get /books/new - Shows the create new book form.
