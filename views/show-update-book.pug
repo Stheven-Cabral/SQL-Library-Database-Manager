@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  header
+    h1= title
+
+  div.container
+    h2= bookTitle
+    p Author: #{author}
+    p Genre: #{genre}
+    p Year: #{year}
+  br
+  div.container
+    h2 Update Book Details
+    form(action="/books/" + book.id)
+      include update-book-form
+  br
+  br
+  a(href="../") &lArr; Back 
+    
