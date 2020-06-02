@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  header
+    h1= title
+    div.container
+      br
+
+      form(action="/books/" + book.id + "/delete", method="post")
+        p Are you sure you want to delete #{book.title}?
+        a(class="button" href="/books/" + book.id) Cancel
+        input(type="submit" value="Yes, Delete")
