@@ -5,7 +5,13 @@ const Books = require('../models').Books;
 /***Handler function used to wrap each route */
 function asyncHandler(cb) {
   return async(req, res, next) => {
-    await cb(req, res, next);
+    try{
+      await cb(req, res, next);
+    } catch (error) {
+      console.log(error.status);
+      console.log("We're Sorry. Page Not Found");
+      res.render('error', {error: error});
+    }
   }
 }
 
@@ -30,15 +36,7 @@ router.post("/", asyncHandler(async (req, res) => {
 // get /books/:id - Shows book detail form.
 router.get('/:id', asyncHandler(async (req, res) => {
   const book = await Books.findByPk(req.params.id);
-  if (book) {
-    res.render("show-update-book", {book: book, title: "Book Details", bookTitle: book.title, author: book.author, genre: book.genre, year: book.year });
-  } else {
-    const err = new Error("We're Sorry. Page Not Found");
-    console.log("We're Sorry. Page Not Found");
-    err.status = 404;
-    res.status(err.status);
-    next(err);
-  }
+  res.render("show-update-book", {book: book, title: "Book Details", bookTitle: book.title, author: book.author, genre: book.genre, year: book.year });
 }));
 
 // post /books/:id - Updates book info in the database.
