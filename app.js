@@ -23,8 +23,12 @@ app.use('/', indexRouter);
 app.use('/books', booksRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+app.use((req, res, next) => {
+  const err = new Error("We're Sorry. Page Not Found");
+  console.log("We're Sorry. Page Not Found");
+  err.status = 404;
+  res.status(err.status);
+  next(err);
 });
 
 // error handler

@@ -30,7 +30,15 @@ router.post("/", asyncHandler(async (req, res) => {
 // get /books/:id - Shows book detail form.
 router.get('/:id', asyncHandler(async (req, res) => {
   const book = await Books.findByPk(req.params.id);
-  res.render("show-update-book", {book: book, title: "Book Details", bookTitle: book.title, author: book.author, genre: book.genre, year: book.year });
+  if (book) {
+    res.render("show-update-book", {book: book, title: "Book Details", bookTitle: book.title, author: book.author, genre: book.genre, year: book.year });
+  } else {
+    const err = new Error("We're Sorry. Page Not Found");
+    console.log("We're Sorry. Page Not Found");
+    err.status = 404;
+    res.status(err.status);
+    next(err);
+  }
 }));
 
 // post /books/:id - Updates book info in the database.
@@ -52,5 +60,7 @@ router.post("/:id/delete", asyncHandler(async (req, res) => {
   await book.destroy();
   res.redirect("/books/");
 }));
+
+
 
 module.exports = router;
