@@ -5,19 +5,15 @@ const Books = require('../models').Books;
 /***Handler function used to wrap each route */
 function asyncHandler(cb) {
   return async(req, res, next) => {
-    try{
       await cb(req, res, next);
-    } catch (error) {
-      console.log(error.status);
-      console.log("We're Sorry. Page Not Found");
-      res.render('error', {error: error});
-    }
   }
 }
 
 // get /books redirected from / in index.js - Shows the full list of books.
 router.get('/', asyncHandler(async (req, res) => {
-  const books = await Books.findAll();
+  const books = await Books.findAll({
+    order: [['title', 'ASC']]
+  });
   res.render("index", { books: books, title: "Books" });
 }));
 
@@ -29,14 +25,30 @@ router.get('/new', asyncHandler((req, res) => {
 // post /books/new - Posts a new book to the database.
 // / is redirected to /books(the url the new book is posted to).
 router.post("/", asyncHandler(async (req, res) => {
-  const book = await Books.create(req.body);
-  res.redirect("/books/" + book.id);
+  let book;
+  try {
+    book = await Books.create(req.body);
+    res.redirect("/books/" + book.id);
+  } catch (error) {
+    console.log(error);
+    console.log(req.body);
+    if (error.name === 'SequelizeValidationError') {
+      book = await Books.build(req.body);
+      res.render("new-book", {book: book, error: error.errors, title: "Add New Book"});
+    }
+  }
 }));
 
 // get /books/:id - Shows book detail form.
 router.get('/:id', asyncHandler(async (req, res) => {
   const book = await Books.findByPk(req.params.id);
-  res.render("show-update-book", {book: book, title: "Book Details", bookTitle: book.title, author: book.author, genre: book.genre, year: book.year });
+  if (book) {
+    res.render("show-update-book", {book: book, title: "Book Details", bookTitle: book.title, author: book.author, genre: book.genre, year: book.year });
+  } else {
+    const err= new Error('Sorry! There was an unexpected error on the server.');
+    console.log(err);
+    res.render('error');
+  }
 }));
 
 // post /books/:id - Updates book info in the database.
@@ -49,7 +61,13 @@ router.post("/:id", asyncHandler(async (req, res) => {
 // get /books/:id/delete - Shows delete page.
 router.get("/:id/delete", asyncHandler(async (req, res) => {
   const book = await Books.findByPk(req.params.id);
-  res.render('delete', {book: book, title: "Delete Book"});
+  if (book) {
+    res.render('delete', {book: book, title: "Delete Book"});
+  } else {
+    const err= new Error('Sorry! There was an unexpected error on the server.');
+    console.log(err);
+    res.render('error');
+  }
 }));
 
 // post /books/:id/delete - Deletes a book. 
@@ -58,7 +76,6 @@ router.post("/:id/delete", asyncHandler(async (req, res) => {
   await book.destroy();
   res.redirect("/books/");
 }));
-
 
 
 module.exports = router;

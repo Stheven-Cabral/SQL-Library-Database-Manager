@@ -22,12 +22,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/books', booksRouter);
 
-// catch 404 and forward to error handler
+// middleware that returns 404 NOT FOUND HTTP status codes and renders the page-not-found view when the user navigates to a non-existent route
 app.use((req, res, next) => {
   const err = new Error("We're Sorry. Page Not Found");
-  console.log("We're Sorry. Page Not Found");
   err.status = 404;
-  res.status(err.status);
+  console.log(err.status + ": We're Sorry. Page Not Found");
   next(err);
 });
 
@@ -39,7 +38,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('page-not-found');
 });
 
 module.exports = app;

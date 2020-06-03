@@ -4,22 +4,28 @@ module.exports = (sequelize, DataTypes) => {
   const Books = sequelize.define('Books', {
     title: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         notEmpty: {
-          msg: 'Please provide a title'
+          msg: 'Please provide a book title'
         }
       }
     },
     author: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         notEmpty: {
-          msg: 'Please provide an author'
+          msg: 'Please provide a book author'
         }
       }
     },
-    genre: DataTypes.STRING,
-    year: DataTypes.INTEGER
+    genre: {
+      type: DataTypes.STRING
+    },
+    year: {
+      type: DataTypes.INTEGER
+    }
   }, {});
 
   // Books.associate = function(models) {
