@@ -22,7 +22,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/books', booksRouter);
 
-// middleware that returns 404 NOT FOUND HTTP status codes and renders the page-not-found view when the user navigates to a non-existent route
+// Middleware that returns 404 NOT FOUND HTTP status code.
+// Pushes the err to the next method and renders the page-not-found through the below error handler.
 app.use((req, res, next) => {
   const err = new Error("We're Sorry. Page Not Found");
   err.status = 404;
