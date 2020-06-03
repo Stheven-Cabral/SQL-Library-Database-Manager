@@ -28,8 +28,5 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {});
 
-  // Books.associate = function(models) {
-  //   // associations can be defined here
-  // };
   return Books;
 };
