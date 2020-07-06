@@ -3,6 +3,9 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var helmet = require('helmet');
+var compression = require('compression');
+
 
 var indexRouter = require('./routes/index');
 var booksRouter = require('./routes/books');
@@ -18,7 +21,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(compression()); //Compress all routes
+app.use(helmet());
 app.use('/', indexRouter);
 app.use('/books', booksRouter);
 
