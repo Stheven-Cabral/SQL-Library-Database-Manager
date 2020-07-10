@@ -6,7 +6,7 @@ var logger = require('morgan');
 var helmet = require('helmet');
 var compression = require('compression');
 
-
+//Require index and books routes
 var indexRouter = require('./routes/index');
 var booksRouter = require('./routes/books');
 
